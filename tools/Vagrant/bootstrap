@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+# Based on script from https://github.com/jackdb/pg-app-dev-vm/blob/master/Vagrant-setup/bootstrap.sh
+
+set -e
+
+function coloredEcho(){
+  # taken from https://stackoverflow.com/a/53463162/11667450
+    red="\033[0;31m"
+    green="\033[0;32m"
+    yellow="\033[1;33m"
+    cyan="\033[1;36m"
+    blue="\033[1;34m"
+    NC="\033[0m" # No Color
+    printf "${!1}${2} ${NC}\n"
+}
+
+coloredEcho "cyan" "Setting configuration variables"
+
+# Edit the following to change the name of the database user that will be created:
+APP_DB_USER="admin-user"
+APP_DB_PASS="admin-password"
+
+# Edit the following to change the name of the database that is created (defaults to the user name)
+APP_DB_NAME="website-db"
+
+# Edit the following to change the version of PostgreSQL that is installed
+PG_VERSION=13
+
+coloredEcho "cyan" "Configuration variables complete"
+
+print_db_usage () {
+  coloredEcho "cyan" "Admin access to postgres user via VM:"
+  coloredEcho "cyan" "  vagrant ssh"
+  coloredEcho "cyan" "  sudo su - postgres"
+  echo ""
+  coloredEcho "cyan" "psql access to app database user via VM:"
+  coloredEcho "cyan" "  vagrant ssh"
+  coloredEcho "cyan" "  sudo su - postgres"
+  coloredEcho "cyan" "  PGUSER=$APP_DB_USER PGPASSWORD=$APP_DB_PASS psql -h localhost $APP_DB_NAME"
+}
+
+export DEBIAN_FRONTEND=noninteractive
+
+PROVISIONED_ON=/etc/vm_provision_on_timestamp
+if [ -f "$PROVISIONED_ON" ]
+then
+  echo "VM was already provisioned at: $(cat $PROVISIONED_ON)"
+  echo "To run system updates manually login via 'vagrant ssh' and run 'apt-get update && apt-get upgrade'"
+  echo ""
+  print_db_usage
+  exit
+fi
+
+coloredEcho "cyan" "Adding apt-keys and installing environment packages"
+
+PG_REPO_APT_SOURCE=/etc/apt/sources.list.d/pgdg.list
+if [ ! -f "$PG_REPO_APT_SOURCE" ]
+then
+  # Add PG apt repo:
+  echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > "$PG_REPO_APT_SOURCE"
+  # Add PGDG repo key:
+  wget --quiet -O - https://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | apt-key add -
+fi
+
+# Update package list
+apt-get update
+
+# Install postgresql, python3.8 and fish shell (required for development)
+apt-get -y install "postgresql-$PG_VERSION" "postgresql-contrib-$PG_VERSION" "bat" "fish" "python3" "python3-pip" "exa" "neovim"
+
+
+coloredEcho "yellow" "Environment packages installed successfully!"
+
+PG_CONF="/etc/postgresql/$PG_VERSION/main/postgresql.conf"
+PG_HBA="/etc/postgresql/$PG_VERSION/main/pg_hba.conf"
+PG_DIR="/var/lib/postgresql/$PG_VERSION/main"
+
+# Edit postgresql.conf to change listen address to '*':
+sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" "$PG_CONF"
+
+# Append to pg_hba.conf to add password auth:
+echo "host    all             all             all                     md5" >> "$PG_HBA"
+
+# Explicitly set default client_encoding
+echo "client_encoding = utf8" >> "$PG_CONF"
+
+# Restart so that all new config is loaded:
+service postgresql restart
+
+coloredEcho "cyan" "Creating database with the given parameters"
+
+cat << EOF | su - postgres -c psql
+-- Create the database user:
+CREATE ROLE "$APP_DB_USER" WITH LOGIN CREATEDB ENCRYPTED PASSWORD '$APP_DB_PASS';
+-- Create the database:
+CREATE DATABASE "$APP_DB_NAME" WITH OWNER="$APP_DB_USER"
+                                  LC_COLLATE="en_US.utf8"
+                                  LC_CTYPE="en_US.utf8"
+                                  ENCODING="UTF8"
+                                  TEMPLATE=template0;
+-- Grant necessary privileges
+GRANT ALL PRIVILEGES ON DATABASE "$APP_DB_NAME" TO "$APP_DB_USER";
+EOF
+
+
+coloredEcho "yellow" "Database creation complete!"
+
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+
+# Tag the provision time:
+date > "$PROVISIONED_ON"
+timedatectl set-ntp true
+timedatectl set-timezone Asia/Kolkata
+
+coloredEcho "cyan" "Installing global python packages"
+pip3 install poetry
+
+print_db_usage
+echo ""
+coloredEcho "blue" "Successfully created printr development virtual machine"

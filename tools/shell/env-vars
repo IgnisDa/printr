@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+echo -e "PYTHONDONTWRITEBYTECODE=\"1\"" >> /etc/environment
+echo -e "PYTHONUNBUFFERED=\"1\"" >> /etc/environment
+echo -e "GITZER_DONT_START_BROWSER=\"1\"" >> /etc/environment
+echo -e "GITZER_BACKEND_HOST=\"0.0.0.0\"" >> /etc/environment
+echo -e "GITZER_FRONTEND_HOST=\"0.0.0.0\"" >> /etc/environment
+echo -e "CHOKIDAR_USEPOLLING=\"1\"" >> /etc/environment
+
+# add a directory to the $PATH which hold all custom scripts
+echo -e "export PATH=\"$PATH:/home/vagrant/custom-scripts/\"" >> /etc/profile.d/env-vars.sh

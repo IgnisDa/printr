@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# This script will be used to install dependencies for all the printr applications
+
+# setup the git identities
+git config --global user.name "Diptesh Choudhuri"
+git config --global user.email "ignisda2001@gmail.com"
+
+# remove the default fish shell prompt
+set fish_greeting
+
+# install Gitzer to the system
+curl -sSL https://raw.githubusercontent.com/IgnisDa/Gitzer/main/get-gitzer.py | python3
+
+# replace the default file content viewer (cat) with bat
+sudo ln -s /usr/bin/batcat /usr/bin/bat
+# load all my system configs
+rm -rf $HOME/.config
+git clone https://github.com/IgnisDa/linux-configs.git $HOME/.config
+
+
+# load the custom scripts and make only files which contain `~ADD_SCRIPT~` in them
+# executable
+CUSTOM_SCRIPTS_DIR="$HOME/custom-scripts"
+git clone https://github.com/IgnisDa/custom-scripts.git $CUSTOM_SCRIPTS_DIR
+for file in "$CUSTOM_SCRIPTS_DIR"/*; do
+    if grep -Fq "~ADD_SCRIPT~" "$file"; then
+        chmod +x "$file"
+    fi
+done
+
+# use the starship prompt
+curl -fsSL https://starship.rs/install.sh > /tmp/install.sh
+chmod +x /tmp/install.sh
+/tmp/install.sh --force
+
+# rust installer
+curl https://sh.rustup.rs -sSf | sh -s -- -y
+source "$HOME/.cargo/env"
+
+
+# set the default interactive shell as fish
+rm -rf "$HOME/.bashrc"
+ln -s "$HOME/.config/.bashrc" "$HOME/.bashrc"
+
+
+# change to the project folder
+cd "$HOME/printr"
+eval "$CUSTOM_SCRIPTS_DIR/setup"
