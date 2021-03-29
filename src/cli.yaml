@@ -1,0 +1,25 @@
+name: "printr"
+version: "0.0.1"
+author: "Diptesh Choudhuri <diptesh.choudhuri@gmail.com>"
+about: "The smarter echo alternative"
+
+args:
+  - STRING:
+      about: "The string to print"
+      multiple: true
+  - newline:
+      short: "n"
+      long: "newline"
+      about: "Do not output a newline"
+  - spaces:
+      short: "s"
+      long: "spaces"
+      about: "Do not separate arguments with spaces"
+  - disable_interpolations:
+      short: "E"
+      about: "Disable interpretation of backslash escapes (default)"
+      group: interpretation
+  - enable_interpolations:
+      short: "e"
+      about: "Enable interpretation of backslash escapes"
+      group: interpretation
