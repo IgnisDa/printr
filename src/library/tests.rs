@@ -3,10 +3,14 @@ use std::error::Error;
 use std::io::Write;
 use tempfile::NamedTempFile;
 
+// we keep using the word "zealous" here since we know it's
+// [afinn](https://github.com/fnielsen/afinn) score is 2.0 and can be used consistently for
+// tests
+
 #[test]
 fn test_new_being_created_with_filename_supplied() -> Result<(), Box<dyn Error>> {
     let mut file = NamedTempFile::new()?;
-    let content = "A test";
+    let content = "zealous";
     write!(file, "{}", content)?;
     let printr = Printr::new(
         true,
@@ -15,16 +19,19 @@ fn test_new_being_created_with_filename_supplied() -> Result<(), Box<dyn Error>>
         false,
         Some(file.path().to_str().unwrap().to_string()),
         None,
-        Some("yellow".to_string()),
+        None,
+        true,
     );
     assert_eq!(
         printr,
         Printr {
             interpretations: true,
             newline: true,
-            color: Some("yellow".to_string()),
+            color: Some("green".to_string()),
             spaces: false,
-            string: content.to_string()
+            string: content.to_string(),
+            sentiment: Sentiment(2.0, 0.0),
+            error: true
         }
     );
     Ok(())
@@ -32,16 +39,27 @@ fn test_new_being_created_with_filename_supplied() -> Result<(), Box<dyn Error>>
 
 #[test]
 fn test_new_being_created_with_input_string_supplied() -> Result<(), Box<dyn Error>> {
-    let content = String::from("A test");
-    let printr = Printr::new(true, true, false, false, None, Some(content.clone()), None);
+    let content = String::from("zealous");
+    let printr = Printr::new(
+        true,
+        true,
+        false,
+        false,
+        None,
+        None,
+        Some(content.clone()),
+        true,
+    );
     assert_eq!(
         printr,
         Printr {
             interpretations: true,
             newline: true,
-            color: None,
+            color: Some("green".to_string()),
             spaces: false,
-            string: content.clone()
+            string: content.clone(),
+            sentiment: Sentiment(2.0, 0.0),
+            error: true
         }
     );
     Ok(())
