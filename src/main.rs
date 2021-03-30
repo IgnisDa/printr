@@ -1,12 +1,45 @@
 use cli::get_program;
-use printr::Arguments;
-use std::env;
+use library::Printr;
 mod cli;
-mod lib;
+mod library;
 
 fn main() {
-    get_program();
-    let args: Vec<String> = env::args().collect();
-    let args = Arguments::new(args);
-    // println!("{:#?}", args);
+    let matches = get_program();
+    let string: Option<String> = match matches.values_of("STRING") {
+        Some(values) => {
+            let mut temp: Vec<String> = vec![];
+            for val in values {
+                temp.push(val.to_string())
+            }
+            Some(temp.join(" "))
+        }
+        None => None,
+    };
+    let newline = matches.is_present("newline");
+    let spaces = matches.is_present("spaces");
+    let disable_interpretation = matches.is_present("disable_interpretation");
+    let enable_interpretation = matches.is_present("enable_interpretation");
+    let interpretations = if disable_interpretation {
+        false
+    } else if enable_interpretation {
+        true
+    } else {
+        false
+    };
+    let file = match matches.value_of("file") {
+        Some(f) => Some(f.to_string()),
+        None => None,
+    };
+    let plain = matches.is_present("plain");
+    let color = match matches.value_of("color") {
+        Some(c) => Some(c.to_string()),
+        None => None,
+    };
+    let printr = Printr::new(interpretations, newline, plain, spaces, file, string, color);
+    println!("{:#?}", &printr);
+    // if let Some(o) = matches.values_of("STRING") {
+    //     for val in o {
+    //         println!("Value of input string: {:#?}", val);
+    //     }
+    // }
 }
