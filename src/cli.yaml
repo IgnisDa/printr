@@ -41,7 +41,10 @@ args:
       takes_value: true
       possible_values:
         - "red"
-        - "bue"
+        - "blue"
         - "green"
         - "yellow"
         - "cyan"
+  - error:
+      long: "error"
+      about: "Print to stderr instead of stdout"
