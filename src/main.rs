@@ -1,5 +1,6 @@
 use cli::get_program;
 use library::Printr;
+
 mod cli;
 mod library;
 
@@ -35,11 +36,16 @@ fn main() {
         Some(c) => Some(c.to_string()),
         None => None,
     };
-    let printr = Printr::new(interpretations, newline, plain, spaces, file, string, color);
-    println!("{:#?}", &printr);
-    // if let Some(o) = matches.values_of("STRING") {
-    //     for val in o {
-    //         println!("Value of input string: {:#?}", val);
-    //     }
-    // }
+    let error = matches.is_present("error");
+    let printr = Printr::new(
+        interpretations,
+        newline,
+        plain,
+        spaces,
+        file,
+        color,
+        string,
+        error,
+    );
+    println!("{:#?}", printr);
 }
