@@ -8,6 +8,6 @@ edition = "2018"
 
 [dependencies]
 clap = { version = "3.0.0-beta.2", features = ["yaml"] }
-colored = "2.0.0"
 tempfile = "3"
 sentiment = "0.1.1"
+ansi_term = "0.12.1"
