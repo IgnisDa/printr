@@ -1,5 +1,4 @@
 name: "printr"
-version: "0.0.1"
 about: "The smarter echo alternative"
 
 args:
@@ -14,7 +13,7 @@ args:
   - spaces:
       short: "s"
       long: "spaces"
-      about: "Do not separate arguments with spaces"
+      about: "Do not separate arguments with spaces, does nothing if --file is supplied"
   - disable_interpretation:
       short: "E"
       about: "Disable interpretation of backslash escapes (default)"
@@ -23,9 +22,9 @@ args:
       short: "e"
       about: "Enable interpretation of backslash escapes"
       group: "interpretation_group"
-  - file:
-      short: "f"
-      long: "file"
+  - input-file:
+      short: "i"
+      long: "input-file"
       group: "file_group"
       about: "The file to read the input STRING from"
       takes_value: true
@@ -48,3 +47,13 @@ args:
   - error:
       long: "error"
       about: "Print to stderr instead of stdout"
+  - formatting:
+      long: "formatting"
+      short: "f"
+      about: "The style to apply to the text, defaults to `None`"
+      possible_values:
+        - "None"
+        - "bold"
+        - "underline"
+        - "strikethrough"
+        - "dimmed"
