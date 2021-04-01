@@ -1,21 +1,14 @@
 use cli::get_program;
-use library::Printr;
+use library::{run, Color, Format, Printr};
 
 mod cli;
 mod library;
 
 fn main() {
     let matches = get_program();
-    let string: Option<String> = match matches.values_of("STRING") {
-        Some(values) => {
-            let mut temp: Vec<String> = vec![];
-            for val in values {
-                temp.push(val.to_string())
-            }
-            Some(temp.join(" "))
-        }
-        None => None,
-    };
+    let string = matches
+        .values_of("STRING")
+        .map(|values| values.map(|s| s.to_string()).collect::<Vec<String>>());
     let newline = matches.is_present("newline");
     let spaces = matches.is_present("spaces");
     let disable_interpretation = matches.is_present("disable_interpretation");
@@ -33,11 +26,28 @@ fn main() {
     };
     let plain = matches.is_present("plain");
     let color = match matches.value_of("color") {
-        Some(c) => Some(c.to_string()),
+        Some(c) => match c {
+            "blue" => Some(Color::Blue),
+            "red" => Some(Color::Red),
+            "yellow" => Some(Color::Yellow),
+            "green" => Some(Color::Green),
+            "cyan" => Some(Color::Cyan),
+            _ => None,
+        },
         None => None,
     };
     let error = matches.is_present("error");
-    let printr = Printr::new(
+    let format = match matches.value_of("formatting") {
+        Some(f) => match f {
+            "bold" => Some(Format::Bold),
+            "dimmed" => Some(Format::Dimmed),
+            "underline" => Some(Format::Underline),
+            "strikethrough" => Some(Format::Strikethrough),
+            _ => None,
+        },
+        None => None,
+    };
+    let mut printr = Printr::new(
         interpretations,
         newline,
         plain,
@@ -45,7 +55,11 @@ fn main() {
         file,
         color,
         string,
-        error,
+        format,
     );
-    println!("{:#?}", printr);
+    run(&mut printr);
+    match error {
+        true => println!("{}", printr.get_output_string()),
+        false => eprintln!("{}", printr.get_output_string()),
+    }
 }
