@@ -1,14 +1,10 @@
 use ansi_term::Colour::{Blue, Cyan, Green, Red, Yellow};
 use ansi_term::Style;
 use std::{fs::read_to_string, process};
+// use regex::Regex;
 
 pub fn run(printr: &mut Printr) {
-    printr.determine_sentiment();
-    printr.handle_spaces();
-    printr.handle_interpretations();
-    printr.determine_color();
-    printr.handle_coloring();
-    printr.handle_formatting();
+    printr.run_all_handles()
 }
 
 #[derive(Debug, PartialEq)]
@@ -108,7 +104,12 @@ impl Printr {
     }
     // we handle the `-e` and `-E` options here
     pub fn handle_interpretations(&mut self) {
-        // we leave this function empty for now
+        if self.config.interpretations {
+            // let re = Regex::new(r"\\").unwrap();
+            // let new_str = self.output_string.clone().unwrap();
+            // let new_str = re.replace_all(&new_str, r"\").to_string();
+            // self.output_string = Some(new_str);
+        }
     }
     // we determine the color that should be applied to the output
     pub fn determine_color(&mut self) {
@@ -162,6 +163,21 @@ impl Printr {
             ),
             None => self.output_string.clone(),
         }
+    }
+    // we handle the `-n` option here
+    pub fn handle_newline(&mut self) {
+        if !self.config.newline {
+            self.output_string = Some(format!("{}\n", self.output_string.clone().unwrap()));
+        }
+    }
+    pub fn run_all_handles(&mut self) {
+        self.determine_sentiment();
+        self.handle_spaces();
+        self.handle_interpretations();
+        self.determine_color();
+        self.handle_coloring();
+        self.handle_newline();
+        self.handle_formatting();
     }
     pub fn get_output_string(self) -> String {
         match self.output_string {
@@ -222,4 +238,82 @@ pub enum Format {
     Strikethrough,
     Dimmed,
 }
-mod tests;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::{error::Error, io::Write};
+    use tempfile::NamedTempFile;
+
+    // we keep using the word "zealous" here since we know it's
+    // [afinn](https://github.com/fnielsen/afinn) score is 2.0 and can be used consistently for
+    // tests
+
+    #[test]
+    fn test_new_being_created_with_filename_supplied() -> Result<(), Box<dyn Error>> {
+        let mut file = NamedTempFile::new()?;
+        let content = "zealous";
+        write!(file, "{}", content)?;
+        let mut printr = Printr::new(
+            true,
+            true,
+            false,
+            false,
+            Some(file.path().to_str().unwrap().to_string()),
+            None,
+            None,
+            None,
+        );
+        printr.run_all_handles();
+        assert_eq!(
+            printr,
+            Printr {
+                string: vec![content.to_string()],
+                sentiment: Some(Sentiment(2.0, 0.0)),
+                output_string: Some("\u{1b}[32mzealous\u{1b}[0m".to_string()),
+                config: Config {
+                    color: Some(Color::Green),
+                    format: None,
+                    interpretations: true,
+                    newline: true,
+                    plain: false,
+                    spaces: false
+                }
+            }
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn test_new_being_created_with_input_string_supplied() -> Result<(), Box<dyn Error>> {
+        let content = String::from("zealous");
+        let mut printr = Printr::new(
+            true,
+            true,
+            false,
+            false,
+            None,
+            None,
+            Some(vec![content.clone()]),
+            Some(Format::Bold),
+        );
+        printr.run_all_handles();
+        assert_eq!(
+            printr,
+            Printr {
+                string: vec![content.clone()],
+                sentiment: Some(Sentiment(2.0, 0.0)),
+                output_string: Some("\u{1b}[1m\u{1b}[32mzealous\u{1b}[0m\u{1b}[0m".to_string()),
+                config: Config {
+                    interpretations: true,
+                    newline: true,
+                    color: Some(Color::Green),
+                    spaces: false,
+                    plain: false,
+                    format: Some(Format::Bold),
+                }
+            }
+        );
+        Ok(())
+    }
+}
