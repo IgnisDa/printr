@@ -1,15 +1,42 @@
 # printr
 
-One Paragraph of project description goes here
+Printr is the smarter `echo` alternative. It is meant as a drop-in replacement of `echo`
+and has additional features like automatically guessing the sentiment of the string passed
+to it and then outputting it in the corresponding color.
 
-This initially appeared on
-[gist](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2), but as
-I can no longer open that page as there are too many comments, I have
-moved it here.
+For example:
+
+1. A positive statement will be colored green.
+
+   ```bash
+   printr This is quite awesome!!!
+   ```
+
+2. A negative statement will be colored red.
+
+   ```bash
+   printr Danger ahead!
+   ```
+
+3. A neutral statement will be colored blue.
+
+   ```bash
+   printr Hello World...
+   ```
+
+For a full list of options and flags available, run `printr --help`.
+
+Behind the scenes, `printr` performs some light sentiment analysis to guess whether a
+statement is positive, negative or neutral.
+
+## Screenshot of printr in action
+
+![printr-image](./assets/screenshot.png)
 
 ## Summary
 
 - [printr](#printr)
+  - [Screenshot of printr in action](#screenshot-of-printr-in-action)
   - [Summary](#summary)
   - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
@@ -23,7 +50,7 @@ moved it here.
   - [Versioning](#versioning)
   - [Authors](#authors)
   - [License](#license)
-  - [Acknowledgments](#acknowledgments)
+  - [Others](#others)
 
 ## Getting Started
 
