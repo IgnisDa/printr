@@ -1,8 +1,8 @@
 use cli::get_program;
-use library::{run, Color, Format, Printr};
+use lib::{run, Color, Format, Printr};
 
 mod cli;
-mod library;
+mod lib;
 
 fn main() {
     let matches = get_program();
@@ -20,7 +20,7 @@ fn main() {
     } else {
         false
     };
-    let file = match matches.value_of("file") {
+    let file = match matches.value_of("input-file") {
         Some(f) => Some(f.to_string()),
         None => None,
     };
@@ -58,8 +58,9 @@ fn main() {
         format,
     );
     run(&mut printr);
+    // println!("{:#?}", &printr);
     match error {
-        true => println!("{}", printr.get_output_string()),
-        false => eprintln!("{}", printr.get_output_string()),
+        true => print!("{}", printr.get_output_string()),
+        false => eprint!("{}", printr.get_output_string()),
     }
 }
