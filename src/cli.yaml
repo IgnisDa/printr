@@ -9,7 +9,7 @@ args:
   - newline:
       short: "n"
       long: "newline"
-      about: "Do not output a newline"
+      about: "Do not output a newline at the end"
   - spaces:
       short: "s"
       long: "spaces"
@@ -52,7 +52,6 @@ args:
       short: "f"
       about: "The style to apply to the text, defaults to `None`"
       possible_values:
-        - "None"
         - "bold"
         - "underline"
         - "strikethrough"
