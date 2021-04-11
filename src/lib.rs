@@ -1,6 +1,6 @@
 use ansi_term::Colour::{Blue, Cyan, Green, Red, Yellow};
 use ansi_term::Style;
-use std::{fs::read_to_string, process};
+use std::{f32::EPSILON, fs::read_to_string, process};
 // use regex::Regex;
 
 pub fn run(printr: &mut Printr) {
@@ -58,6 +58,7 @@ pub struct Printr {
 }
 
 impl Printr {
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         interpretations: bool,
         newline: bool,
@@ -181,8 +182,8 @@ impl Printr {
     }
     pub fn get_output_string(self) -> String {
         match self.output_string {
-            Some(s) => return s.to_owned(),
-            None => return "".to_string().to_owned(),
+            Some(s) => s,
+            None => "".to_string(),
         }
     }
 }
@@ -213,7 +214,7 @@ impl Sentiment {
         Self(analyser.positive.score, analyser.negative.score)
     }
     fn get_polarity(self) -> i8 {
-        if self.0 == self.1 {
+        if (self.0 - self.1).abs() < EPSILON {
             0
         } else if self.0 > self.1 {
             1

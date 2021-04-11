@@ -15,10 +15,8 @@ fn main() {
     let enable_interpretation = matches.is_present("enable_interpretation");
     let interpretations = if disable_interpretation {
         false
-    } else if enable_interpretation {
-        true
     } else {
-        false
+        enable_interpretation
     };
     let file = match matches.value_of("input-file") {
         Some(f) => Some(f.to_string()),
