@@ -1,7 +1,9 @@
 [package]
 name = "printr"
 version = "0.1.0"
-authors = ["IgnisDa <ignisda2001@gmail.com>"]
+authors = [
+    "Diptesh Choudhuri <diptesh.choudhuri@gmail.com>",
+]
 edition = "2018"
 description = "The smarter echo alternative"
 
