@@ -1,0 +1,134 @@
+on: [push, pull_request]
+
+name: Standard Jobs
+
+jobs:
+  check:
+    name: Run checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Install Packages
+        run: |
+          ci/build-ubuntu
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: Run cargo check
+        uses: actions-rs/cargo@v1
+        with:
+          command: check
+
+  test:
+    name: Run tests
+    strategy:
+      matrix:
+        build:
+          - pinned
+          - stable
+          - beta
+          - nightly
+          - nightly-musl
+          - nightly-32
+          - nightly-mips
+          - nightly-arm
+          - macos
+          - win-msvc
+          - win-gnu
+        include:
+          - build: pinned
+            os: ubuntu-18.04
+            rust: 1.41.0
+          - build: stable
+            os: ubuntu-18.04
+            rust: stable
+          - build: beta
+            os: ubuntu-18.04
+            rust: beta
+          - build: nightly
+            os: ubuntu-18.04
+            rust: nightly
+          - build: nightly-musl
+            os: ubuntu-18.04
+            rust: nightly
+            target: x86_64-unknown-linux-musl
+          - build: nightly-32
+            os: ubuntu-18.04
+            rust: nightly
+            target: i686-unknown-linux-gnu
+          - build: nightly-mips
+            os: ubuntu-18.04
+            rust: nightly
+            target: mips64-unknown-linux-gnuabi64
+          - build: nightly-arm
+            os: ubuntu-18.04
+            rust: nightly
+            target: arm-unknown-linux-gnueabihf
+          - build: macos
+            os: macos-latest
+            rust: nightly
+          - build: win-msvc
+            os: windows-2019
+            rust: nightly
+          - build: win-gnu
+            os: windows-2019
+            rust: nightly-x86_64-gnu
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Install packages (Ubuntu)
+        if: matrix.os == 'ubuntu-18.04'
+        run: |
+          ci/build-ubuntu
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: Run cargo test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+
+  lints:
+    name: Run lints
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Install Packages
+        run: |
+          ci/build-ubuntu
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          components: rustfmt, clippy
+
+      - name: Run cargo fmt
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: --all -- --check
+
+      - name: Run cargo clippy
+        uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: -- -D warnings
