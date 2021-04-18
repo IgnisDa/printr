@@ -1,8 +1,7 @@
-use cli::get_program;
-use lib::{run, Color, Format, Printr};
-
 mod cli;
-mod lib;
+
+use cli::get_program;
+use printr::{run, Color, Format, Printr};
 
 fn main() {
     let matches = get_program();
