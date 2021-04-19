@@ -9,7 +9,7 @@ For example:
 1. A positive statement will be colored green.
 
    ```bash
-   printr This is quite awesome!!!
+   printr This is quite awesome!
    ```
 
 2. A negative statement will be colored red.
@@ -51,9 +51,9 @@ printr comes packaged with a convenience install script that can run on all bash
 Run the following command in your terminal (git-bash for windows users).
 
 ```bash
-curl https://raw.githubusercontent.com/IgnisDa/printr/development/tools/install -o install
+curl https://raw.githubusercontent.com/IgnisDa/printr/development/get-printr.sh -o get-printr.sh
 # Warning: always examine scripts downloaded from the internet before running them locally.
-sudo sh install
+sudo sh get-printr.sh
 ```
 
 ## Contributing
