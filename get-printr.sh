@@ -373,6 +373,9 @@ fi
 
 if [ -z "${BIN_DIR-}" ]; then
   BIN_DIR=/usr/local/bin
+  if [ ! -d "$BIN_DIR" ]; then
+    BIN_DIR=/usr/bin
+  fi
 fi
 
 if [ -z "${ARCH-}" ]; then
