@@ -409,7 +409,7 @@ Example:
         .multiple()
         .help(SHORT)
         .long_help(LONG)
-        .required_unless(&["input-file"]);
+        .conflicts(&["input-file"]);
     args.push(arg);
 }
 
@@ -543,7 +543,7 @@ contents.
         .short("i")
         .help(SHORT)
         .long_help(LONG)
-        .required_unless(&["STRING"]);
+        .conflicts(&["STRING"]);
     args.push(arg);
 }
 
