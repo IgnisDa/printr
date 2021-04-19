@@ -39,7 +39,6 @@ fn main() {
     app.gen_completions("printr", Shell::Bash, &outdir);
     app.gen_completions("printr", Shell::Fish, &outdir);
     app.gen_completions("printr", Shell::Zsh, &outdir);
-    app.gen_completions("printr", Shell::PowerShell, &outdir);
 }
 
 fn generate_man_page<P: AsRef<Path>>(outdir: P) -> io::Result<()> {
