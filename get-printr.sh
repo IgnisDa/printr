@@ -155,13 +155,17 @@ setup_package() {
   local untar_dir="$1"
   local sudo="${2-}"
   local bin_dir=$3
+  local platform="$4"
 
   # setup man pages
-  MAN_DIR="$(MANPATH="$(manpath)"; echo "${MANPATH%%:*}")/man1"
-  "${sudo}" mkdir -p "${MAN_DIR}"
-  gzip "${untar_dir}/doc/${APP_NAME}.1"
-  "${sudo}" cp "${untar_dir}/doc/${APP_NAME}.1.gz" "${MAN_DIR}/"
-  "${sudo}" mandb
+  # man is not a command in git-bash so we ignore this step
+  if [[ "windows" != *"$platform"* ]]; then
+    MAN_DIR="$(MANPATH="$(manpath)"; echo "${MANPATH%%:*}")/man1"
+    "${sudo}" mkdir -p "${MAN_DIR}"
+    gzip "${untar_dir}/doc/${APP_NAME}.1"
+    "${sudo}" cp "${untar_dir}/doc/${APP_NAME}.1.gz" "${MAN_DIR}/"
+    "${sudo}" mandb
+  fi
 
   # setup completions files and other docs
   DOC_DIR="/usr/share/doc/${APP_NAME}"
@@ -214,6 +218,8 @@ install() {
 
   untar_dir=$(get_tmpdir)
 
+  platform=$(detect_platform)
+
   # download to the temp file
   download "${archive}" "${URL}"
 
@@ -221,7 +227,7 @@ install() {
   unpack "${archive}" "${untar_dir}"
 
   # setup the package (man pages, docs, and the main executable)
-  setup_package "${untar_dir}" "${sudo}" "${BIN_DIR}"
+  setup_package "${untar_dir}" "${sudo}" "${BIN_DIR}" "${platform}"
 }
 
 # Currently supporting:
