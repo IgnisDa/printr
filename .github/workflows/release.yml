@@ -138,7 +138,7 @@ jobs:
           echo "TARGET_DIR=./target/${{ matrix.target }}" >> $GITHUB_ENV
 
       - name: Set flags (Windows)
-        if: matrix.build != 'linux' || matrix.build != 'linux-arm' || matrix.build != 'macos'
+        if: matrix.build == 'win-msvc' || matrix.build == 'win-gnu' || matrix.build == 'win32-msvc'
         run: |
           echo "CARGO=cross" >> $env:GITHUB_ENV
           echo "TARGET_FLAGS=--target ${{ matrix.target }}" >> $env:GITHUB_ENV
