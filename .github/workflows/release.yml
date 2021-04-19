@@ -176,7 +176,7 @@ jobs:
           mkdir -p "$staging"/{complete,doc}
           cp {README.md,LICENSE} "$staging/"
           # cp {CHANGELOG.md,FAQ.md,GUIDE.md} "$staging/doc/"
-          cp "$outdir"/{${{ env.APP_NAME }}.bash,${{ env.APP_NAME }}.fish,_${{ env.APP_NAME }}.ps1} "$staging/complete/"
+          cp "$outdir"/{${{ env.APP_NAME }}.bash,${{ env.APP_NAME }}.fish} "$staging/complete/"
           # cp complete/_${{ env.APP_NAME }} "$staging/complete/"
           if [ "${{ matrix.os }}" = "windows-2019" ]; then
             # cp "target/${{ matrix.target }}/release/${{ env.APP_NAME }}.exe" "$staging/"
