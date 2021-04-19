@@ -258,6 +258,7 @@ impl CustomArg {
 
     /// Sets this argument to a required argument, unless one of the given
     /// arguments is provided.
+    #[allow(dead_code)]
     fn required_unless(mut self, names: &[&'static str]) -> Self {
         self.clap_arg = self.clap_arg.required_unless_one(names);
         self
