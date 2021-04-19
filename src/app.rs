@@ -521,7 +521,13 @@ color escape codes do not mangle up the resulting file.
 
 fn switch_error(args: &mut Vec<CustomArg>) {
     const SHORT: &str = "Print to stderr instead of stdout";
-    let arg = CustomArg::switch("error").help(SHORT);
+    const LONG: &str = long!(
+        "\
+If this switch is supplied, the output will be printed to stdout.
+This can then be piped as required.
+        "
+    );
+    let arg = CustomArg::switch("error").help(SHORT).long_help(LONG);
     args.push(arg);
 }
 
