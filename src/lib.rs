@@ -1,7 +1,7 @@
 use ansi_term::Colour::{Blue, Cyan, Green, Red, Yellow};
 use ansi_term::Style;
 use std::{f32::EPSILON, fs::read_to_string, process};
-// use regex::Regex;
+pub mod app;
 
 pub fn run(printr: &mut Printr) {
     printr.run_all_handles()
@@ -106,10 +106,7 @@ impl Printr {
     // we handle the `-e` and `-E` options here
     pub fn handle_interpretations(&mut self) {
         if self.config.interpretations {
-            // let re = Regex::new(r"\\").unwrap();
-            // let new_str = self.output_string.clone().unwrap();
-            // let new_str = re.replace_all(&new_str, r"\").to_string();
-            // self.output_string = Some(new_str);
+            self.output_string = Some(self.output_string.clone().unwrap().replace(r"\\", r"\"));
         }
     }
     // we determine the color that should be applied to the output

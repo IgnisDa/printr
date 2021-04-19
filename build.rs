@@ -25,10 +25,7 @@ fn main() {
         );
         process::exit(1);
     };
-    match fs::remove_dir_all(&outdir) {
-        Err(_) => {}
-        Ok(_) => {}
-    };
+    if fs::remove_dir_all(&outdir).is_ok() {};
     fs::create_dir_all(&outdir).unwrap();
     let stamp_path = Path::new(&outdir).join("printr-stamp");
     if let Err(err) = File::create(&stamp_path) {
@@ -62,8 +59,8 @@ fn generate_man_page<P: AsRef<Path>>(outdir: P) -> io::Result<()> {
     tpl = tpl.replace("{{OPTIONS}}", &options);
     tpl = tpl.replace("{{VERSION}}", clap::crate_version!());
     tpl = tpl.replace("{{AUTHORS}}", clap::crate_authors!(",\n"));
-
     File::create(&txt_path)?.write_all(tpl.as_bytes())?;
+
     let result = process::Command::new("asciidoctor")
         .arg("--doctype")
         .arg("manpage")

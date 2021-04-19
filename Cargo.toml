@@ -1,16 +1,17 @@
 [package]
 name = "printr"
 version = "0.1.0"
-authors = [
-    "Diptesh Choudhuri <diptesh.choudhuri@gmail.com>",
-]
+authors = ["Diptesh Choudhuri <diptesh.choudhuri@gmail.com>"]
 edition = "2018"
 description = "The smarter echo alternative"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+readme = "README.md"
+documentation = "https://github.com/IgnisDa/printr"
+homepage = "https://github.com/IgnisDa/printr"
+repository = "https://github.com/IgnisDa/printr"
+license = "LICENSE"
+build = "build.rs"
 
 [dependencies]
-clap = { version = "3.0.0-beta.2", features = ["yaml"] }
 sentiment = "0.1.1"
 ansi_term = "0.12.1"
 
@@ -18,3 +19,13 @@ ansi_term = "0.12.1"
 tempfile = "3"
 assert_cmd = "1.0.3"
 predicates = "1"
+
+[dependencies.clap]
+version = "2.33.0"
+default-features = false
+features = ["suggestions"]
+
+[build-dependencies.clap]
+version = "2.33.0"
+default-features = false
+features = ["suggestions"]

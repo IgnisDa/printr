@@ -11,8 +11,14 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install Packages
+        if: matrix.os == 'ubuntu-18.04'
         run: |
           ci/ubuntu-install-packages
+
+      - name: Install packages (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          ci/macos-install-packages
 
       - name: Install stable toolchain
         uses: actions-rs/toolchain@v1
