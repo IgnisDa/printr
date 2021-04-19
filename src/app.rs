@@ -298,7 +298,6 @@ impl CustomArg {
     /// Sets conflicting arguments. That is, if this argument is used whenever
     /// any of the other arguments given here are used, then clap will report
     /// an error.
-    #[allow(dead_code)]
     fn conflicts(mut self, names: &[&'static str]) -> Self {
         self.clap_arg = self.clap_arg.conflicts_with_all(names);
         self
@@ -554,7 +553,7 @@ using some naive sentiment analysis.
         .short("c")
         .help(SHORT)
         .long_help(LONG)
-        .required_unless(&["plain"])
+        .conflicts(&["plain"])
         .possible_values(&["red", "blue", "green", "yellow", "cyan"]);
     args.push(arg);
 }
