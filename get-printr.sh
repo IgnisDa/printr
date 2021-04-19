@@ -159,7 +159,7 @@ setup_package() {
 
   # setup man pages
   # man is not a command in git-bash so we ignore this step
-  if [[ "windows" != *"$platform"* ]]; then
+  if [ "windows" != *"$platform"* ]; then
     MAN_DIR="$(MANPATH="$(manpath)"; echo "${MANPATH%%:*}")/man1"
     eval "${sudo}" mkdir -p "${MAN_DIR}"
     gzip "${untar_dir}/doc/${APP_NAME}.1"
