@@ -2,6 +2,16 @@
 ##  (2021-04-19)
 
 
+#### Bug Fixes
+
+* **app.rs:**
+  *  add correct long help to error switch ([77148582](77148582))
+  *  color option compulsion removed ([0c37d2aa](0c37d2aa))
+* **cli.yaml:**  add description, remove option from format ([92ea1c31](92ea1c31))
+* **main.rs:**  reorder passing arguments ([d18adf4b](d18adf4b))
+* **printr.1.txt.tpl, printr.txt.tpl:**  rename file ([0ef554c0](0ef554c0))
+* **standard-jobs.yml, ubuntu-install-packages:**  rename file, change references ([487d8286](487d8286))
+
 #### Features
 
 *   initial commit ([fa32ce55](fa32ce55))
@@ -30,11 +40,3 @@
   *  complete almost all implementations ([57641e04](57641e04))
   *  add sentiment analysis methods ([e5d0a93e](e5d0a93e))
 * **tests.rs:**  delete useless file ([f19b2aad](f19b2aad))
-
-#### Bug Fixes
-
-* **app.rs:**  color option compulsion removed ([0c37d2aa](0c37d2aa))
-* **cli.yaml:**  add description, remove option from format ([92ea1c31](92ea1c31))
-* **main.rs:**  reorder passing arguments ([d18adf4b](d18adf4b))
-* **printr.1.txt.tpl, printr.txt.tpl:**  rename file ([0ef554c0](0ef554c0))
-* **standard-jobs.yml, ubuntu-install-packages:**  rename file, change references ([487d8286](487d8286))
