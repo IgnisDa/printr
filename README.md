@@ -65,7 +65,7 @@ of conduct, and the process for submitting pull requests to us.
 
 We use [SemVer](http://semver.org/) for versioning. For the versions
 available, see the [tags on this
-repository](https://github.com/PurpleBooth/a-good-readme-template/tags).
+repository](tags).
 
 ## Authors
 
