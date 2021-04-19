@@ -51,7 +51,7 @@ printr comes packaged with a convenience install script that can run on all bash
 Run the following command in your terminal (git-bash for windows users).
 
 ```bash
-curl https://raw.githubusercontent.com/IgnisDa/printr/development/get-printr.sh -o get-printr.sh
+curl https://raw.githubusercontent.com/IgnisDa/printr/main/get-printr.sh -o get-printr.sh
 # Warning: always examine scripts downloaded from the internet before running them locally.
 sudo sh get-printr.sh
 ```
