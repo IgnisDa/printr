@@ -161,25 +161,25 @@ setup_package() {
   # man is not a command in git-bash so we ignore this step
   if [[ "windows" != *"$platform"* ]]; then
     MAN_DIR="$(MANPATH="$(manpath)"; echo "${MANPATH%%:*}")/man1"
-    "${sudo}" mkdir -p "${MAN_DIR}"
+    eval "${sudo}" mkdir -p "${MAN_DIR}"
     gzip "${untar_dir}/doc/${APP_NAME}.1"
-    "${sudo}" cp "${untar_dir}/doc/${APP_NAME}.1.gz" "${MAN_DIR}/"
-    "${sudo}" mandb
+    eval "${sudo}" cp "${untar_dir}/doc/${APP_NAME}.1.gz" "${MAN_DIR}/"
+    eval "${sudo}" mandb
   fi
 
   # setup completions files and other docs
   DOC_DIR="/usr/share/doc/${APP_NAME}"
-  "${sudo}" mkdir -p "$DOC_DIR"
-  "${sudo}" cp "${untar_dir}/README.md" "${DOC_DIR}/"
-  "${sudo}" cp "${untar_dir}/LICENSE" "${DOC_DIR}/"
-  "${sudo}" cp "${untar_dir}/complete/"* "${DOC_DIR}/"
+  eval "${sudo}" mkdir -p "$DOC_DIR"
+  eval "${sudo}" cp "${untar_dir}/README.md" "${DOC_DIR}/"
+  eval "${sudo}" cp "${untar_dir}/LICENSE" "${DOC_DIR}/"
+  eval "${sudo}" cp "${untar_dir}/complete/"* "${DOC_DIR}/"
 
   # add main executable to $PATH
   if [ -f "${untar_dir}/${APP_NAME}.exe" ]
     # we are on windows, so we copy the exe executable
-    then "${sudo}" cp "${untar_dir}/${APP_NAME}.exe" "${bin_dir}/"
+    then eval "${sudo}" cp "${untar_dir}/${APP_NAME}.exe" "${bin_dir}/"
     # we are on linux, so we copy the linux executable
-    else "${sudo}" cp "${untar_dir}/${APP_NAME}" "${bin_dir}/"
+    else eval "${sudo}" cp "${untar_dir}/${APP_NAME}" "${bin_dir}/"
   fi
 }
 
