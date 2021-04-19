@@ -127,12 +127,23 @@ jobs:
           target: ${{ matrix.target }}
 
       - name: Use Cross
-        # if: matrix.os != 'windows-2019'
         run: |
           cargo install cross
+
+      - name: Set flags (Linux and macOS)
+        if: matrix.build == 'linux' || matrix.build == 'linux-arm' || matrix.build == 'macos'
+        run: |
           echo "CARGO=cross" >> $GITHUB_ENV
           echo "TARGET_FLAGS=--target ${{ matrix.target }}" >> $GITHUB_ENV
           echo "TARGET_DIR=./target/${{ matrix.target }}" >> $GITHUB_ENV
+
+      - name: Set flags (Windows)
+        if: matrix.build != 'linux' || matrix.build != 'linux-arm' || matrix.build != 'macos'
+        run: |
+          echo "CARGO=cross" >> $env:GITHUB_ENV
+          echo "TARGET_FLAGS=--target ${{ matrix.target }}" >> $env:GITHUB_ENV
+          echo "TARGET_DIR=./target/${{ matrix.target }}" >> $env:GITHUB_ENV
+
       - name: Show commands used
         run: |
           echo "cargo command is: ${{ env.CARGO }}"
