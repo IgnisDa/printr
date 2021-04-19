@@ -164,7 +164,6 @@ setup_package() {
     eval "${sudo}" mkdir -p "${MAN_DIR}"
     gzip "${untar_dir}/doc/${APP_NAME}.1"
     eval "${sudo}" cp "${untar_dir}/doc/${APP_NAME}.1.gz" "${MAN_DIR}/"
-    eval "${sudo}" mandb
   fi
 
   # setup completions files and other docs
