@@ -1,6 +1,6 @@
 # printr
 
-Printr is the smarter `echo` alternative. It is meant as a drop-in replacement of `echo`
+`printr` is the smarter `echo` alternative. It is meant as a drop-in replacement of `echo`
 and has additional features like automatically guessing the sentiment of the string passed
 to it and then outputting it in the corresponding color.
 
@@ -47,7 +47,7 @@ statement is positive, negative or neutral.
 
 ### Installing
 
-printr comes packaged with a convenience install script that can run on all bash systems.
+`printr` comes packaged with a convenience install script that can run on all bash systems.
 Run the following command in your terminal (git-bash for windows users).
 
 ```bash
@@ -55,6 +55,8 @@ curl https://raw.githubusercontent.com/IgnisDa/printr/main/get-printr.sh -o get-
 # Warning: always examine scripts downloaded from the internet before running them locally.
 sh get-printr.sh
 ```
+
+The above command can also be used to update your current installation of `printr`.
 
 ## Contributing
 
