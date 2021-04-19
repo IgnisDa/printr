@@ -1,10 +1,7 @@
-mod cli;
-
-use cli::get_program;
-use printr::{run, Color, Format, Printr};
+use printr::{app::app, run, Color, Format, Printr};
 
 fn main() {
-    let matches = get_program();
+    let matches = app().get_matches();
     let string = matches
         .values_of("STRING")
         .map(|values| values.map(|s| s.to_string()).collect::<Vec<String>>());
