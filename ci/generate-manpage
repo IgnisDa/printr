@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-python3 ./ci/string-substitution.py
-asciidoctor -b manpage dist/printr.txt -D .artifacts
