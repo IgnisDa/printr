@@ -93,7 +93,7 @@ cp /usr/share/doc/printr/printr.fish $HOME/.config/fish/completions/printr.fish
 #### Zsh
 
 ```bash
-cp /usr/share/doc/printr/_printr" "$HOME/.zfunc/_printr
+cp /usr/share/doc/printr/_printr $HOME/.zfunc/_printr
 ```
 
 You must then add the following line in your `$HOME/.zshrc` before `compinit`:
