@@ -185,14 +185,12 @@ jobs:
           outdir="$(ci/cargo-out-dir "${{ env.TARGET_DIR }}")"
           staging="${{ env.APP_NAME }}-${{ env.RELEASE_VERSION }}-${{ matrix.target }}"
           mkdir -p "$staging"/{complete,doc}
-          cp {README.md,LICENSE} "$staging/"
-          # cp {CHANGELOG.md,FAQ.md,GUIDE.md} "$staging/doc/"
-          cp "$outdir"/{${{ env.APP_NAME }}.bash,${{ env.APP_NAME }}.fish} "$staging/complete/"
-          # cp complete/_${{ env.APP_NAME }} "$staging/complete/"
+          cp {README.md,LICENSE,CHANGELOG.md} "$staging/"
+          cp "$outdir"/{${{ env.APP_NAME }}.bash,${{ env.APP_NAME }}.fish,_${{ env.APP_NAME }}} "$staging/complete/"
           if [ "${{ matrix.os }}" = "windows-2019" ]; then
-            # cp "target/${{ matrix.target }}/release/${{ env.APP_NAME }}.exe" "$staging/"
-            find . -name ${{ env.APP_NAME }}.exe | xargs
-            cp "$(find . -name ${{ env.APP_NAME }}.exe | grep -v deps | xargs)" "$staging/"
+            cp "target/${{ matrix.target }}/release/${{ env.APP_NAME }}.exe" "$staging/"
+            # find . -name ${{ env.APP_NAME }}.exe | xargs
+            # cp "$(find . -name ${{ env.APP_NAME }}.exe | grep -v deps | xargs)" "$staging/"
             7z a "$staging.zip" "$staging"
             echo "ASSET=$staging.zip" >> $GITHUB_ENV
           else
