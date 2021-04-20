@@ -21,12 +21,12 @@ pub struct CustomArg {
     /// prose.
     ///
     /// This is shown in the `--help` output.
-    /// Whether this flag is hidden or not.
     ///
     /// Generally, these flags should be documented in the documentation for
     /// the flag they override.
-    pub hidden: bool,
     pub doc_long: &'static str,
+    /// Whether this flag is hidden or not.
+    pub hidden: bool,
     /// The type of this argument.
     pub kind: CustomArgKind,
 }
