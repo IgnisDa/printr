@@ -29,14 +29,14 @@ For a full list of options and flags available, run `printr --help`.
 Behind the scenes, `printr` performs some light sentiment analysis to guess whether a
 statement is positive, negative or neutral.
 
-## Screenshot of printr in action
+## printr in action
 
-![printr-image](./assets/screenshot.png)
+![printr-image](./assets/printr-demo.gif)
 
 ## Summary
 
 - [printr](#printr)
-  - [Screenshot of printr in action](#screenshot-of-printr-in-action)
+  - [printr in action](#printr-in-action)
   - [Summary](#summary)
     - [Installing](#installing)
   - [Contributing](#contributing)
