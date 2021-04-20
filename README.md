@@ -81,19 +81,19 @@ Windows). They can be copied to the correct directories to enable tab completion
 You should have [bash-completion](https://github.com/scop/bash-completion) installed.
 
 ```bash
-cp "/usr/share/doc/printr/printr.bash" "/etc/bash_completion.d/printr.bash-completion"
+cp /usr/share/doc/printr/printr.bash /etc/bash_completion.d/printr.bash-completion
 ```
 
 #### Fish
 
 ```bash
-cp "/usr/share/doc/printr/printr.fish" "$HOME/.config/completions/printr.fish"
+cp /usr/share/doc/printr/printr.fish $HOME/.config/fish/completions/printr.fish
 ```
 
 #### Zsh
 
 ```bash
-cp "/usr/share/doc/printr/_printr" "$HOME/.zfunc/_printr"
+cp /usr/share/doc/printr/_printr" "$HOME/.zfunc/_printr
 ```
 
 You must then add the following line in your `$HOME/.zshrc` before `compinit`:
