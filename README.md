@@ -51,9 +51,9 @@ statement is positive, negative or neutral.
 Run the following command in your terminal (git-bash for windows users).
 
 ```bash
-curl https://raw.githubusercontent.com/IgnisDa/printr/main/get-printr.sh -o get-printr.sh
+curl https://raw.githubusercontent.com/IgnisDa/printr/main/get-printr.bash -o get-printr.bash
 # Warning: always examine scripts downloaded from the internet before running them locally.
-sh get-printr.sh
+bash get-printr.bash
 ```
 
 The above command can also be used to update your current installation of `printr`.
