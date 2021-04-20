@@ -155,11 +155,11 @@ setup_package() {
   local untar_dir="$1"
   local sudo="${2-}"
   local bin_dir=$3
-  local platform="$4"
 
   # setup man pages
-  # man is not a command in git-bash so we ignore this step
-  if [[ "$platform" != *"windows"* ]]; then
+  # some systems (like git bash for windows) might not have man installed,
+  # ignore this step for them
+  if has man; then
     MAN_DIR="$(MANPATH="$(manpath)"; echo "${MANPATH%%:*}")/man1"
     eval "${sudo}" mkdir -p "${MAN_DIR}"
     gzip "${untar_dir}/doc/${APP_NAME}.1"
@@ -217,8 +217,6 @@ install() {
 
   untar_dir=$(get_tmpdir)
 
-  platform=$(detect_platform)
-
   # download to the temp file
   download "${archive}" "${URL}"
 
@@ -226,7 +224,7 @@ install() {
   unpack "${archive}" "${untar_dir}"
 
   # setup the package (man pages, docs, and the main executable)
-  setup_package "${untar_dir}" "${sudo}" "${BIN_DIR}" "${platform}"
+  setup_package "${untar_dir}" "${sudo}" "${BIN_DIR}"
 }
 
 # Currently supporting:
