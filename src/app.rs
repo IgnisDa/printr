@@ -494,7 +494,6 @@ If -e is used, the following sequences are recognized:
     • \\0NNN byte with octal value NNN (1 to 3 digits)
 
     • \\xHH byte with hexadecimal value HH (1 to 2 digits)
-
         "
     );
     let arg = CustomArg::switch("enable_interpretation")
@@ -526,6 +525,10 @@ fn switch_error(args: &mut Vec<CustomArg>) {
         "\
 If this switch is supplied, the output will be printed to stdout.
 This can then be piped as required.
+
+Example:
+
+        printr --error \"Error string input\" 2> errors.txt
         "
     );
     let arg = CustomArg::switch("error").help(SHORT).long_help(LONG);
@@ -554,6 +557,7 @@ fn flag_color(args: &mut Vec<CustomArg>) {
         "\
 If not supplied, the color is guessed from the contents of the input
 using some naive sentiment analysis.
+[possible values: red, blue, green, yellow, cyan]
         "
     );
     let arg = CustomArg::flag("color", "color")
@@ -571,6 +575,7 @@ fn flag_formatting(args: &mut Vec<CustomArg>) {
         "\
 Some terminal emulators do not support some of the formatting options.
 You might have to experiment to find which ones work for you.
+[possible values: bold, underline, strikethrough, dimmed]
         "
     );
     let arg = CustomArg::flag("formatting", "formatting")
