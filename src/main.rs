@@ -54,7 +54,7 @@ fn main() {
     run(&mut printr);
     // println!("{:#?}", &printr);
     match error {
-        true => print!("{}", printr.get_output_string()),
-        false => eprint!("{}", printr.get_output_string()),
+        true => eprint!("{}", printr.get_output_string()),
+        false => print!("{}", printr.get_output_string()),
     }
 }
