@@ -1,9 +1,13 @@
+//! This module is responsible for building the command line application and it's
+//! associated interface.
 use clap::{self, crate_authors, crate_version, App, AppSettings};
 
 /// Arg is a light alias for a clap::Arg that is specialized to compile time
 /// string literals.
 type Arg = clap::Arg<'static, 'static>;
 
+/// This is a custom type which acts a wrapper around clap's `Arg` struct and adds some
+/// extended custom functionality.
 pub struct CustomArg {
     /// The underlying clap argument.
     clap_arg: Arg,
@@ -30,6 +34,9 @@ pub struct CustomArg {
     /// The type of this argument.
     pub kind: CustomArgKind,
 }
+
+/// All arguments can have three types - `POSITIONAL`, `SWITCH` and `FLAG`. This enum takes
+/// care of handling logic for these three types.
 #[derive(Clone)]
 pub enum CustomArgKind {
     /// A positional argument.
@@ -362,6 +369,8 @@ figure out the input STRING's sentiment via some naive sentiment analysis.
 Project home page: https://github.com/IgnisDa/printr
 ";
 
+/// This sets some basic metadata about our command line application, such as `help`,
+/// `version` etc, and then attaches all the relevant arguments to it.
 pub fn app() -> App<'static, 'static> {
     let mut app = App::new("printr")
         .author(crate_authors!())
@@ -377,6 +386,8 @@ pub fn app() -> App<'static, 'static> {
     app
 }
 
+/// This function takes a vector as an argument and pushes all the arguments for the app
+/// into it. This can be later used to build the command line application.
 pub fn all_args_and_flags() -> Vec<CustomArg> {
     let mut args = vec![];
     arg_string(&mut args);

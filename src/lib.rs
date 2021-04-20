@@ -3,12 +3,14 @@ use ansi_term::Style;
 use std::{f32::EPSILON, fs::read_to_string, process};
 pub mod app;
 
+/// This function takes a `printr` object and runs it through all the associated methods so
+/// that all the arguments, flags and switches are accounted for.
 pub fn run(printr: &mut Printr) {
     printr.run_all_handles()
 }
 
 #[derive(Debug, PartialEq)]
-pub struct Config {
+struct Config {
     // if `-E` is supplied, this will be `false`
     interpretations: bool,
     // if `-n` is supplied, this will be `true`
@@ -26,7 +28,7 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new(
+    fn new(
         interpretations: bool,
         newline: bool,
         spaces: bool,
@@ -45,6 +47,8 @@ impl Config {
     }
 }
 
+/// The main struct that is responsible for generating the output string that will be
+/// displayed to the end user.
 #[derive(Debug, PartialEq)]
 pub struct Printr {
     // the input `STRING`, if the `-f` is supplied, this will contain the contents of the file
@@ -58,6 +62,10 @@ pub struct Printr {
 }
 
 impl Printr {
+    /// Create a new object of this struct.
+    ///
+    /// **NOTE:** None of the handles are run at this point, so the output string will be
+    /// unformatted. Refer to [`run_all_handles`](struct.Printr.html#method.run_all_handles).
     #[allow(clippy::too_many_arguments)]
     pub fn new(
         interpretations: bool,
@@ -90,12 +98,12 @@ impl Printr {
             output_string: None,
         }
     }
-    // we perform sentiment analysis
+    /// We perform sentiment analysis.
     pub fn determine_sentiment(&mut self) {
         let sentiment = Sentiment::new(self.string.clone());
         self.sentiment = Some(sentiment);
     }
-    // we handle the `-s` option here
+    /// We handle the `-s` option here.
     pub fn handle_spaces(&mut self) {
         if self.config.spaces {
             self.output_string = Some(self.string.join(""))
@@ -103,19 +111,19 @@ impl Printr {
             self.output_string = Some(self.string.join(" "))
         }
     }
-    // we handle the `-e` and `-E` options here
+    /// We handle the `-e` and `-E` options here.
     pub fn handle_interpretations(&mut self) {
         if self.config.interpretations {
             self.output_string = Some(self.output_string.clone().unwrap().replace(r"\\", r"\"));
         }
     }
-    // we determine the color that should be applied to the output
+    /// We determine the color that should be applied to the output.
     pub fn determine_color(&mut self) {
         if !self.config.plain && self.config.color.is_none() {
             self.config.color = Some(determine_color(&self.sentiment.clone().unwrap()));
         }
     }
-    // we handle the `-c` option here
+    /// We handle the `-c` option here.
     pub fn handle_coloring(&mut self) {
         self.output_string = match self.config.color {
             Some(Color::Blue) => Some(Blue.paint(self.output_string.clone().unwrap()).to_string()),
@@ -132,7 +140,7 @@ impl Printr {
             None => self.output_string.clone(),
         };
     }
-    // we handle the `-f` option here
+    /// We handle the `-f` option here.#
     pub fn handle_formatting(&mut self) {
         self.output_string = match self.config.format {
             Some(Format::Bold) => Some(
@@ -162,12 +170,14 @@ impl Printr {
             None => self.output_string.clone(),
         }
     }
-    // we handle the `-n` option here
+    /// We handle the `-n` option here.
     pub fn handle_newline(&mut self) {
         if !self.config.newline {
             self.output_string = Some(format!("{}\n", self.output_string.clone().unwrap()));
         }
     }
+    /// This runs all the above functions so that all the switches and flags are accounted
+    /// for.
     pub fn run_all_handles(&mut self) {
         self.determine_sentiment();
         self.handle_spaces();
@@ -177,6 +187,7 @@ impl Printr {
         self.handle_newline();
         self.handle_formatting();
     }
+    /// This method will return the final string that should be displayed.
     pub fn get_output_string(self) -> String {
         match self.output_string {
             Some(s) => s,
@@ -220,6 +231,8 @@ impl Sentiment {
         }
     }
 }
+
+/// The colors in which the output can be displayed in.
 #[derive(Debug, PartialEq)]
 pub enum Color {
     Red,
@@ -229,6 +242,7 @@ pub enum Color {
     Cyan,
 }
 
+/// The formats in which the output can be displayed in.
 #[derive(Debug, PartialEq)]
 pub enum Format {
     Bold,
