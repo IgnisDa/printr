@@ -4,7 +4,7 @@
 and has additional features like automatically guessing the sentiment of the string passed
 to it and then outputting it in the corresponding color.
 
-For example:
+Examples:
 
 1. A positive statement will be colored green.
 
@@ -29,16 +29,25 @@ For a full list of options and flags available, run `printr --help`.
 Behind the scenes, `printr` performs some light sentiment analysis to guess whether a
 statement is positive, negative or neutral.
 
-## printr in action
+**NOTE**: _This program does not work well with Windows CMD and Powershell. It works with
+[Git-Bash](https://git-scm.com/book/en/v2/Appendix-A%3A-Git-in-Other-Environments-Git-in-Bash)._
+
+## A small demo
 
 ![printr-image](./assets/printr-demo.gif)
 
 ## Summary
 
 - [printr](#printr)
-  - [printr in action](#printr-in-action)
+  - [A small demo](#a-small-demo)
   - [Summary](#summary)
     - [Installing](#installing)
+  - [Notes](#notes)
+    - [Completions](#completions)
+      - [Bash](#bash)
+      - [Fish](#fish)
+      - [Zsh](#zsh)
+    - [Miscellaneous](#miscellaneous)
   - [Contributing](#contributing)
   - [Versioning](#versioning)
   - [Authors](#authors)
@@ -51,12 +60,61 @@ statement is positive, negative or neutral.
 Run the following command in your terminal (git-bash for windows users).
 
 ```bash
-curl https://raw.githubusercontent.com/IgnisDa/printr/main/get-printr.bash -o get-printr.bash
+curl https://raw.githubusercontent.com/IgnisDa/printr/main/get-printr.sh -o get-printr.sh
 # Warning: always examine scripts downloaded from the internet before running them locally.
-bash get-printr.bash
+bash get-printr.sh
 ```
 
 The above command can also be used to update your current installation of `printr`.
+
+## Notes
+
+### Completions
+
+The completions for `printr` are installed to `/usr/share/doc/printr` (or equivalent on
+Windows). They can be copied to the correct directories to enable tab completions.
+
+**NOTE**: You may need to restart your shell in order for the changes to take effect.
+
+#### Bash
+
+You should have [bash-completion](https://github.com/scop/bash-completion) installed.
+
+```bash
+cp "/usr/share/doc/printr/printr.bash" "/etc/bash_completion.d/printr.bash-completion"
+```
+
+#### Fish
+
+```bash
+cp "/usr/share/doc/printr/printr.fish" "$HOME/.config/completions/printr.fish"
+```
+
+#### Zsh
+
+```bash
+cp "/usr/share/doc/printr/_printr" "$HOME/.zfunc/_printr"
+```
+
+You must then add the following line in your `$HOME/.zshrc` before `compinit`:
+
+```bash
+fpath+=~/.zfunc
+```
+
+For `oh-my-zsh`, you must then enable printr in your `$HOME/.zshrc` plugins
+
+```bash
+plugins(
+   printr
+   ...
+   )
+```
+
+### Miscellaneous
+
+The output of `printr -h` is different from `printr --help`. The installation script also
+sets up man pages that can be accessed using `man printr` on non Windows systems.
 
 ## Contributing
 
