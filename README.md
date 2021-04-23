@@ -67,6 +67,13 @@ bash get-printr.sh
 
 The above command can also be used to update your current installation of `printr`.
 
+`print` is also available on the [AUR](https://aur.archlinux.org/packages/printr-git/) and
+can be installed using any AUR helper.
+
+```bash
+yay -S printr-git
+```
+
 ## Notes
 
 ### Completions
