@@ -534,7 +534,7 @@ fn switch_error(args: &mut Vec<CustomArg>) {
     const SHORT: &str = "Print to stderr instead of stdout";
     const LONG: &str = long!(
         "\
-If this switch is supplied, the output will be printed to stdout.
+If this switch is supplied, the output will be printed to stderr.
 This can then be piped as required.
 
 Example:
