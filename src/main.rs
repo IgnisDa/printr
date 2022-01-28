@@ -14,10 +14,7 @@ fn main() {
     } else {
         enable_interpretation
     };
-    let file = match matches.value_of("input-file") {
-        Some(f) => Some(f.to_string()),
-        None => None,
-    };
+    let maybe_file = matches.value_of("input-file").map(|f| f.to_string());
     let plain = matches.is_present("plain");
     let color = match matches.value_of("color") {
         Some(c) => match c {
@@ -46,7 +43,7 @@ fn main() {
         newline,
         plain,
         spaces,
-        file,
+        maybe_file,
         color,
         string,
         format,

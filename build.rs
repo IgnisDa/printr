@@ -77,7 +77,7 @@ fn generate_man_page<P: AsRef<Path>>(outdir: P) -> io::Result<()> {
 
 fn formatted_options() -> io::Result<String> {
     let mut args = app::all_args_and_flags();
-    args.sort_by(|x1, x2| x1.name.cmp(&x2.name));
+    args.sort_by(|x1, x2| x1.name.cmp(x2.name));
 
     let mut formatted = vec![];
     for arg in args {
